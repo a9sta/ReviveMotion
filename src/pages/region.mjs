@@ -6,7 +6,7 @@ import {
   courseGrid, stepList, factTable, faqBlock, noticeBlock,
   longtail, nearGu, dongList, guIndex, telCta,
 } from '../lib/blocks.mjs';
-import { GU_LEAD_A, GU_LEAD_B, GU_LEAD_C, SIDO_LEAD } from '../content/copy.mjs';
+import { GU_LEAD_A, GU_LEAD_B, GU_LEAD_C, GU_LEAD_A_FAR, GU_LEAD_C_FAR, SIDO_LEAD } from '../content/copy.mjs';
 
 const at = (h, arr, slot = 0) => arr[parseInt(h.substr((slot * 3) % 29, 3), 16) % arr.length];
 
@@ -15,6 +15,9 @@ function guCtx(ctx, sd, g) {
   const { cfg, courses } = ctx;
   const cross = g.near.find((n) => !n.same);
   const rank = rankWord(g.areaRank, sd.gu.length) || `${g.areaRank}번째로 넓은`;
+  // ★가장 가까운 '우리가 받는' 시군구가 30km 넘게 떨어졌으면 외딴 구다.
+  //   이쪽에 '가까우니 같은 권역'이라고 쓰면 거짓이 된다.
+  const far = g.near[0].km > 30;
   return {
     sido: sd.name, sidoFull: sd.full, gu: g.name,
     josa_eun: josa(g.name, '은/는'), josa_i: josa(g.name, '이/가'),
@@ -30,6 +33,7 @@ function guCtx(ctx, sd, g) {
     tel: cfg.tel, telLabel: cfg.telLabel, telNote: cfg.telNote,
     minPrice: won(Math.min(...courses.map((c) => c.price))),
     nearList: g.near.slice(0, 3).map((n) => n.gu).join('·'),
+    far,
   };
 }
 
@@ -43,9 +47,9 @@ export function guPage(ctx, sd, g) {
   const c = guCtx(ctx, sd, g);
 
   const lead = `<div class="lead">
-  <p>${at(h, GU_LEAD_A, 0)(c)}</p>
+  <p>${at(h, c.far ? GU_LEAD_A_FAR : GU_LEAD_A, 0)(c)}</p>
   <p>${at(h, GU_LEAD_B, 1)(c)}</p>
-  <p>${at(h, GU_LEAD_C, 2)(c)}</p>
+  <p>${at(h, c.far ? GU_LEAD_C_FAR : GU_LEAD_C, 2)(c)}</p>
 </div>`;
 
   const facts = sec('fact', `${esc(g.name)} 한눈에`,
@@ -56,7 +60,7 @@ export function guPage(ctx, sd, g) {
       ['넓이', `${km2(g.area)} · ${esc(sd.name)}에서 ${esc(c.rankPhrase)} 축`],
       ['시도 중심에서', `${km(g.kmFromCenter)} ${esc(dirWord(g.dir))}`],
       ['구 안 최대 거리', g.spanKm ? `${km(g.spanKm)} (가장 먼 두 동 사이)` : '행정동 1곳'],
-      ['가까운 시군구', g.near.slice(0, 3).map((n) => `${esc(n.gu)} ${km(n.km)}`).join(' · ')],
+      [c.far ? '가까운 접수 지역' : '가까운 시군구', g.near.slice(0, 3).map((n) => `${esc(n.gu)} ${km(n.km)}`).join(' · ')],
       ['접수', `${esc(cfg.hours)} · ${esc(cfg.pay)} · 도착 ${esc(cfg.arrive)}`],
     ]),
     '행정동 경계 자료의 중심점 좌표와 면적을 계산해 적은 값입니다. 지어낸 숫자가 아닙니다.', '00');
@@ -76,7 +80,7 @@ export function guPage(ctx, sd, g) {
     telCta(cfg, `${sd.name} ${g.name}`, seed),
     courseGrid(courses, seed, g.name),
     dongList(g, seed, '02'),
-    nearGu(sd, g, seed, '03'),
+    nearGu(sd, g, seed, '03', c.far),
     stepList(seed),
     faqHtml,
     noticeBlock(seed, '06'),

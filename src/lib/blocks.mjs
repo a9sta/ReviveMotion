@@ -92,16 +92,16 @@ export function longtail(pool, seedKey, n, heading, sub, num) {
 }
 
 /* ── 가까운 구 ────────────────────────────────────────────────── */
-export function nearGu(sd, g, seedKey, num) {
+export function nearGu(sd, g, seedKey, num, far = false) {
   const items = g.near.map((n) => `<li>
     <a href="/${n.sidoSlug}/${n.slug}/">
       <span class="nr-g">${esc(n.gu)}</span>
       <span class="nr-s">${n.same ? `같은 ${esc(sd.name)}` : esc(n.sido)}</span>
       <span class="nr-k">${km(n.km)}</span>
     </a></li>`).join('');
-  return sec('near', `${esc(g.name)}에서 가까운 시군구`,
+  return sec('near', far ? `${esc(g.name)}에서 가장 가까운 접수 지역` : `${esc(g.name)}에서 가까운 시군구`,
     `<ul class="nr-ul">${items}</ul>`,
-    at(hash(seedKey, 'nr'), SEC.nearSub), num);
+    at(hash(seedKey, 'nr'), far ? SEC.nearSubFar : SEC.nearSub), num);
 }
 
 /* ── 구 안의 행정동 목록 ──────────────────────────────────────────
