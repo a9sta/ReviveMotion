@@ -1,0 +1,32 @@
+{
+  "brand": {
+    "ko": "리바이브모션",
+    "en": "ReviveMotion",
+    "slogan": "굳은 몸을 다시 움직이게"
+  },
+  "siteUrl": "https://revivemotion.netlify.app",
+  "locale": "ko_KR",
+  "tel": "050-8202-4752",
+  "telRaw": "05082024752",
+  "telLabel": "예약 문의",
+  "telNote": "안심번호",
+  "hours": "24시간 연중무휴",
+  "pay": "후불제",
+  "arrive": "접수 뒤 20~40분",
+  "naverVerification": "",
+  "rssTitle": "리바이브모션 방문 관리 기록",
+  "business": {
+    "name": "리바이브모션",
+    "owner": "",
+    "regNo": "",
+    "address": "",
+    "privacyOfficer": "",
+    "email": "",
+    "note": "사업자 정보는 확정되는 대로 이 항목만 채우면 푸터·스키마에 함께 반영된다. 비워 두면 해당 줄은 출력하지 않는다."
+  },
+  "coverage": {
+    "note": "yeomim.f.jieumweb.com 과 같은 지역. 시군구 단위로만 페이지를 만든다.",
+    "sido": ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남"]
+  },
+  "indexNowKey": "ad79c38ca9d7ded377caa3757b755f91"
+}

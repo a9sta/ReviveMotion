@@ -1,0 +1,14 @@
+{
+  "name": "revivemotion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "리바이브모션 출장마사지 — 전국 15개 시도 시군구 150곳 방문 관리 안내 정적 사이트",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node src/build.mjs",
+    "regions": "node scripts/build-regions.mjs",
+    "check": "node scripts/check.mjs",
+    "serve": "node scripts/serve.mjs"
+  }
+}
